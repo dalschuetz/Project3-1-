@@ -8,7 +8,18 @@
     <!-- Adjust the CSS path as needed -->
   </head>
   <body>
-    <h1>Employee Attendance</h1>
+    <header>
+      <div class="topnav">
+        <ul>
+          <li><h1>Employee Records</h1></li>
+          <li><a href="/">Logout</a></li>
+          <li><a href="/viewAttendance">View Attendance</a></li>
+          <li><a href="/viewEmployees">View Employees</a></li>
+          <li><a href="/addEmployees">Add Employees</a></li>
+          <li><a href="/internal">Manager Home</a></li>
+        </ul>
+      </div>
+    </header>
 
     <!-- Search Bar Form -->
     <form action="/viewEmployees" method="GET">
