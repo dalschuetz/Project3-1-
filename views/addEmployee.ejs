@@ -13,20 +13,31 @@
         />
       </head>
 <body>
+  <header>
+    <div class="topnav">
+      <ul>
+        <li><h1>Add New Employee</h1></li>
+        <li><a href="/">Logout</a></li>
+        <li><a href="/viewAttendance">View Attendance</a></li>
+        <li><a href="/viewEmployees">View Employees</a></li>
+        <li><a href="/addEmployee">Add Employees</a></li>
+        <li><a href="/internal">Manager Home</a></li>
+      </ul>
+    </div>
+  </header>
     <div class="container">
-        <h2>Add New Employee</h2>
         <form action="/addEmployee" method="POST">
             <label for="EmpFirstName">First Name:</label>
-            <input type="text" id="EmpFirstName" name="EmpFirstName" required />
+            <input type="text" id="EmpFirstName" name="EmpFirstName" placeholder="First Name" required />
             <br><br>
             <label for="EmpLastName">Last Name:</label>
-            <input type="text" id="EmpLastName" name="EmpLastName" required />
+            <input type="text" id="EmpLastName" name="EmpLastName" placeholder="Last Name" required />
             <br><br>
             <label for="EmpAreaCode">Area Code:</label>
-            <input type="text" id="EmpAreaCode" name="EmpAreaCode" required />
+            <input type="text" id="EmpAreaCode" name="EmpAreaCode" placeholder="555" required />
             <br><br>
             <label for="EmpPhoneNumber">Phone Number:</label>
-            <input type="text" id="EmpPhoneNumber" name="EmpPhoneNumber" required />
+            <input type="text" id="EmpPhoneNumber" name="EmpPhoneNumber" placeholder="123-1234" required />
             <br><br>
             <button type="submit">Add Employee</button>
             <br>
