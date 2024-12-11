@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Attendance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Edit Attendance</h1>
+  
+  <form action="/editAttendance/<%= attendance.AttendanceID %>" method="POST">
+    <div>
+      <label for="AttenDate">Attendance Date:</label>
+      <input type="date" id="AttenDate" name="AttenDate" value="<%= new Date(attendance.AttenDate).toISOString().split('T')[0] %>" required>
+    </div>
+
+    <!-- Dropdown for Attendance Description -->
+    <div>
+      <label for="AttenDescription">Attendance Description:</label>
+      <select id="AttenDescription" name="AttenDescription" onchange="updatePointValue()" required>
+        <% descriptions.forEach(description => { %>
+          <option value="<%= description.AttenDescription %>" <%= description.AttenDescription === attendance.AttenDescription ? "selected" : "" %>><%= description.AttenDescription %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <!-- Input for Point Value, now editable -->
+    <div>
+      <label for="AttenPointValue">Attendance Points:</label>
+      <input type="number" id="AttenPointValue" name="AttenPointValue" value="<%= attendance.AttenPointValue %>" step="0.1" required>
+    </div>
+
+    <button type="submit">Update Attendance</button>
+  </form>
+  
+  <a href="/viewAttendance">Back to Attendance List</a>
+  
+  <script>
+    function updatePointValue() {
+      var description = document.getElementById("AttenDescription").value;
+      var pointValue = document.getElementById("AttenPointValue");
+  
+      // Create an object to store descriptions and default point values
+      var pointValues = <%= JSON.stringify(descriptions.map(d => ({
+        description: d.AttenDescription, 
+        pointValue: d.AttenPointValue || 0
+      }))) %>;
+  
+      // Find the point value for the selected description
+      var selectedDescription = pointValues.find(d => d.description === description);
+  
+      // Optionally suggest a default point value, but allow manual editing
+      if (selectedDescription) {
+        // Uncomment the next line if you want to auto-update point value
+        // pointValue.value = selectedDescription.pointValue;
+      }
+    }
+  
+    // Call the updatePointValue function when the page loads
+    window.onload = function() {
+      updatePointValue();
+    }
+  </script>
+</body>
+</html>

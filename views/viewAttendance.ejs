@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Attendance</title>
+    <link rel="stylesheet" href="/style.css" />
+    <!-- Adjust the CSS path as needed -->
+  </head>
+  <body>
+    <h1>Employee Attendance</h1>
+
+    <!-- Search Bar Form -->
+    <form action="/viewAttendance" method="GET">
+      <input type="text" name="search" placeholder="Search by Employee Name" value="<%= searchQuery || '' %>" />
+      <button type="submit">Search</button>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Employee Name</th>
+          <th>Attendance Date</th>
+          <th>Attendance Points</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% attendanceData.forEach(record => { %>
+        <% if (record.AttenPointValue > 0) { %>
+        <tr>
+          <td><%= record.EmpFirstName %> <%= record.EmpLastName %></td>
+          <td><%= new Date(record.AttenDate).toLocaleDateString() %></td>
+          <td><%= record.AttenPointValue %></td>
+          <td><%= record.AttenDescription %></td>
+          <td>
+            <a href="/editAttendance/<%= record.AttendanceID %>">
+              <button>Edit</button>
+            </a>
+          </td>
+        </tr>
+        <% } %>
+        <% }) %>
+      </tbody>
+    </table>
+    <a href="/internal">Back to Home</a>
+  </body>
+</html>

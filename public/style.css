@@ -1,0 +1,69 @@
+:root {
+  --main: #d3d9d4;
+  --textColor: #212a31;
+  --accentColor: #748d92;
+  --secondaryAccent: #124e66;
+  --fancyFont: "Oswald", sans-serif;
+  --mainFont: "Montserrat", sans-serif;
+}
+
+body {
+  background-color: var(--main);
+  color: var(--textColor);
+  font-family: var(--mainFont);
+}
+/*style the nav menu */
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--accentColor);
+}
+li h1 {
+  color: var(--textColor);
+  text-align: center;
+  font-family: var(--fancyFont);
+  font-size: 4.5em;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  float: right;
+  font-family: var(--fancyFont);
+}
+
+li a:hover {
+  background-color: var(--textColor);
+}
+
+/* style the welcome container */
+.welcome-container {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 2fr 1fr;
+  column-gap: 10px;
+}
+
+.welcome-container img {
+  max-width: 100%;
+  justify-self: center;
+  align-self: center;
+  padding: 10px;
+  margin-right: 20px;
+}
+
+.welcome-container .text {
+  padding: 10px;
+  font-size: 1.4em;
+  line-height: 1.6;
+  text-align: center;
+  background-color: var(--secondaryAccent);
+  color: var(--main);
+  margin: 15px;
+}
