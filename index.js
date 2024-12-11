@@ -52,46 +52,68 @@ app.post("/login", async (req, res) => {
 });
 
 // Add Volunteer Loading and Posting
-app.get("/addVolunteer", (req, res) => {
-  knex("Referral")
-    .select("ReferralID", "ReferralName")
-    .then((Referral) => res.render("addVolunteer", { Referral }))
+// GET route to fetch attendance options and render the form
+app.get("/addAttendance", (req, res) => {
+  // Fetch Attendance descriptions to populate dropdown or display options
+  knex("Attendance")
+    .select("AttendanceID", "AttenDescription")
+    .then((attendanceOptions) => {
+      // Fetch employees to potentially link attendance
+      return knex("Employees")
+        .select("EmployeeID", "EmpFirstName", "EmpLastName")
+        .then((employees) => {
+          res.render("addAttendance", { 
+            attendanceOptions, 
+            employees 
+          });
+        });
+    })
     .catch((error) => {
-      console.error("Error fetching Referral:", error);
+      console.error("Error fetching Attendance or Employees:", error);
       res.status(500).send("Internal Server Error");
     });
 });
 
-app.post("/addEmployee", (req, res) => {
-  const VolFirstName = req.body.VolFirstName.toUpperCase() || "";
-  const VolLastName = req.body.VolLastName.toUpperCase() || "";
-  const Phone = req.body.Phone || "";
-  const Email = req.body.Email || "";
-  const VolCity = req.body.VolCity.toUpperCase() || "";
-  const VolCounty = req.body.VolCounty.toUpperCase() || "";
-  const VolState = req.body.VolState.toUpperCase() || "";
-  const ReferralID = parseInt(req.body.ReferralID);
-  const SewingLevel = req.body.SewingLevel || "B";
-  const HoursPerMonth = parseInt(req.body.HoursPerMonth) || null;
+// POST route to add attendance record
+app.post("/addAttendance", (req, res) => {
+  // Extract data from request body
+  const {
+    EmployeeID,
+    AttendanceID,
+    AttenDate,
+    AttenPointValue
+  } = req.body;
 
-  knex("Volunteer")
-    .insert({
-      VolFirstName,
-      VolLastName,
-      Phone,
-      Email,
-      VolCity,
-      VolCounty,
-      VolState,
-      ReferralID,
-      SewingLevel,
-      HoursPerMonth,
-    })
-    .then(() => res.redirect("/"))
-    .catch((error) => {
-      console.error("Error Adding Volunteer:", error);
+  // Validate required fields
+  if (!EmployeeID || !AttendanceID || !AttenDate || !AttenPointValue) {
+    return res.status(400).send("Missing required attendance information");
+  }
+
+  // Begin transaction to ensure data integrity
+  knex.transaction(async (trx) => {
+    try {
+      // Insert into Employee_Attendance table
+      await trx("Employee_Attendance")
+        .insert({
+          EmployeeID: parseInt(EmployeeID),
+          AttendanceID: parseInt(AttendanceID),
+          AttenDate: new Date(AttenDate),
+          AttenPointValue: parseInt(AttenPointValue)
+        });
+
+      // Commit the transaction
+      await trx.commit();
+
+      // Redirect on successful insertion
+      res.redirect("/");
+    } catch (error) {
+      // Rollback the transaction in case of error
+      await trx.rollback();
+
+      console.error("Error Adding Attendance Record:", error);
       res.status(500).send("Internal Server Error");
-    });
+    }
+  });
 });
 
 // -----> View Attendance
@@ -306,6 +328,66 @@ app.post('/deleteEmployee/:EmployeeID', (req, res) => {
     });
 });
 
+// Render Add Employee Page
+
+app.get("/addEmployee", (req, res) => res.render("addEmployee", { data: "Employee" }));
+
+
+// Insert Employee Data into the Database
+
+app.post("/addEmployee", (req, res) => {
+
+  // Access employee data from req.body
+
+  const EmpFirstName = req.body.EmpFirstName || '';
+
+  const EmpLastName = req.body.EmpLastName|| '';
+
+  const EmpAreaCode = req.body.EmpAreaCode || '';
+
+  const EmpPhoneNumber = req.body.EmpPhoneNumber || '';
+
+
+  // Check for required fields
+
+  if (!EmpFirstName || !EmpLastName || !EmpAreaCode || !EmpPhoneNumber) {
+
+    return res.status(400).send('All fields are required.');
+
+  }
+
+
+  // Insert data into the Employees table
+
+  knex('Employees')
+
+    .insert({
+
+      EmpFirstName: EmpFirstName,
+
+      EmpLastName: EmpLastName,
+
+      EmpAreaCode: EmpAreaCode,
+
+      EmpPhoneNumber: EmpPhoneNumber,
+
+    })
+
+    .then(() => {
+
+      res.redirect("/internal"); // Redirect to the home page or a success page
+
+    })
+
+    .catch((error) => {
+
+      console.error('Error Adding Employee:', error);
+
+      res.status(500).send('Internal Server Error');
+
+    });
+
+});
 
 
 // Route for internal page (after login)
