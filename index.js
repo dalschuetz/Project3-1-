@@ -1,7 +1,7 @@
 let express = require("express");
 let app = express();
 let path = require("path");
-
+const port = process.env.PORT || 3000; 
 app.use(express.urlencoded({ extended: true }));
 
 // -----> Connect Database here
