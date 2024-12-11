@@ -8,11 +8,11 @@ app.use(express.urlencoded({ extended: true }));
 const knex = require("knex")({
   client: "pg",
   connection: {
-    host: "localhost",
-    user: "postgres",
-    password: "DallensPostMalazan21",
-    database: "403Project",
-    port: 5432,
+    host: process.env.RDS_HOSTNAME|| "localhost",
+    user: process.env.RDS_USERNAME || "postgres",
+    password: process.env.RDS_PASSWORD || "DallensPostMalazan21",
+    database: process.env.RDS_DB_NAME || "403Project",
+    port: process.env.RDS_PORT || 5432,
   },
 });
 
