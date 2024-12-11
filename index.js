@@ -3,6 +3,7 @@ let app = express();
 let path = require("path");
 const port = process.env.PORT || 3000; 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // -----> Connect Database here
 const knex = require("knex")({
@@ -199,123 +200,113 @@ app.post("/deleteAttendance/:AttendanceID", (req, res) => {
     });
 });
 
-// -----> View Certifications
-app.get("/viewCertifications", (req, res) => {
-  const searchQuery = req.query.search || "";  // Get the search query from the request
 
-  knex("Student_Certifications as sc")
-    .join("Employees as e", "sc.EmployeeID", "e.EmployeeID")
-    .join("Certifications as c", "sc.CertificationID", "c.CertificationID")
+
+
+app.get("/viewEmployees", (req, res) => {
+  const searchQuery = req.query.search || ""; // Get the search query from the request
+
+  knex("Employees")
     .select(
-      "e.EmpFirstName",
-      "e.EmpLastName",
-      "c.CertDescription",
-      "sc.CertGrade"
+      "EmployeeID",
+      "EmpFirstName",
+      "EmpLastName",
+      "EmpAreaCode",
+      "EmpPhoneNumber"
     )
-    .where("e.EmpFirstName", "ILIKE", `%${searchQuery}%`) // Search by employee first name
-    .orWhere("e.EmpLastName", "ILIKE", `%${searchQuery}%`) // Or search by employee last name
-    .then((certificationsData) => {
-      res.render("viewCertifications", {
-        certificationsData,
+    .where("EmpFirstName", "ILIKE", `%${searchQuery}%`)  // Search by employee first name
+    .orWhere("EmpLastName", "ILIKE", `%${searchQuery}%`) // Or search by employee last name
+    .orderBy("EmpLastName", "desc")
+    .then((EmployeeData) => {
+      // Render the view with the filtered data and the search query
+      res.render("viewEmployees", {
+        EmployeeData,
         searchQuery,  // Pass the search query to the template
       });
     })
     .catch((error) => {
-      console.error("Error fetching certifications data:", error);
+      console.error("Error fetching attendance data:", error);
       res.status(500).send("Internal Server Error");
     });
 });
 
-// -----> Add Certification
-app.post("/addCertification", (req, res) => {
-  const { EmployeeID, CertificationID, Grade, CertificationDate } = req.body;
 
-  knex("Employee_Certifications")
-    .insert({
-      EmployeeID,
-      CertificationID,
-      Grade,
-      CertificationDate,
-    })
-    .then(() => res.redirect("/viewCertifications")) // Redirect to viewCertifications after successful insert
-    .catch((error) => {
-      console.error("Error adding certification:", error);
-      res.status(500).send("Internal Server Error");
-    });
-});
-
-// GET route for editing certifications
-app.get("/editCertifications", (req, res) => {
-  const { EmployeeID, CertificationID } = req.query;
-
-  // Validate if the required parameters are present
-  if (!EmployeeID) {
-    return res.status(400).send("Missing get employeeid");
-  }
-  if (!CertificationID) {
-    return res.status(400).send("Missing get certificationid");
-  }
-
-  // Fetch the required data from the three tables
-  Promise.all([
-    knex("Student_Certifications")
-      .where("CertificationID", CertificationID)
-      .where("EmployeeID", EmployeeID)
-      .first(), // Use first() to get a single object instead of an array
-    knex("Employees")
-      .where("EmployeeID", EmployeeID)
-      .first(),
-    knex("Certifications")
-      .where("CertificationID", CertificationID)
-      .first()
-  ])
-    .then(([certification, employee, certDescription]) => {
-      if (!certification || !employee || !certDescription) {
-        return res.status(404).send("Employee, Certification, or Description not found");
+// -----> Edit Attendance
+app.get('/editEmployee/:EmployeeID', (req, res) => {
+  let EmployeeID = req.params.EmployeeID;
+  // Query the Pokémon by ID first
+  knex('Employees')
+    .where('EmployeeID', EmployeeID)
+    .first()
+    .then(Employee => {
+      if (!Employee) {
+        return res.status(404).send('Employee not found');
       }
-
-      // Pass the data to the editCertifications page
-      res.render("editCertifications", {
-        Certification: certification,
-        Employee: employee,
-        CertDescription: certDescription.CertDescription
-      });
+      res.render('editEmployees', { Employee });
     })
-    .catch((err) => {
-      console.error("Error fetching data:", err);
-      res.status(500).send("Internal Server Error");
+    .catch(error => {
+      console.error('Error fetching Employee for editing:', error);
+      res.status(500).send('Internal Server Error');
     });
 });
 
-// POST route for updating certifications
-app.post("/editCertifications", (req, res) => {
-  const { EmployeeID, CertificationID, CertGrade } = req.body;
 
-  // Validate inputs
-  if (!EmployeeID) {
-    return res.status(400).send("Missing post employeeid");
-  }
-  if (!CertificationID) {
-    return res.status(400).send("Missing post certificationid");
-  }
+app.post('/editEmployee/:EmployeeID', (req, res) => {
+  console.log('Received form data:', req.body); // Log form data
 
-  // Update the certification grade
-  knex("Student_Certifications")
-    .where({
-      EmployeeID: EmployeeID,
-      CertificationID: CertificationID
-    })
+  const EmployeeID = req.params.EmployeeID;
+  const EmpFirstName = req.body.EmpFirstName;
+  const EmpLastName = req.body.EmpLastName;
+  const EmpAreaCode = req.body.EmpAreaCode;
+  const EmpPhoneNumber = req.body.EmpPhoneNumber;
+
+  knex('Employees')
+    .where('EmployeeID', EmployeeID)
     .update({
-      CertGrade: CertGrade
+      EmpFirstName: EmpFirstName,
+      EmpLastName: EmpLastName,
+      EmpAreaCode: EmpAreaCode,
+      EmpPhoneNumber: EmpPhoneNumber,
     })
     .then(() => {
-      res.redirect("/viewCertifications");
+      console.log('Update successful for EmployeeID:', EmployeeID);
+      res.redirect('/viewEmployees');
     })
-    .catch((err) => {
-      console.error("Error updating certification:", err);
-      res.status(500).send("Internal Server Error");
+    .catch(error => {
+      console.error('Error updating Employees:', error);
+      res.status(500).send('Internal Server Error');
     });
 });
+
+
+app.post('/deleteEmployee/:EmployeeID', (req, res) => {
+  const EmployeeID = req.params.EmployeeID; // Capture EmployeeID from URL parameter
+
+  // Debugging: Log the EmployeeID
+  console.log('Attempting to delete EmployeeID:', EmployeeID);
+
+  // Query the Employee table
+  knex('Employees') // Correct table name
+    .where('EmployeeID', EmployeeID) // Correct column name
+    .del() // Delete the record
+    .then((rowsAffected) => {
+      // Debugging: Log the rows affected
+      console.log(`Rows deleted: ${rowsAffected}`);
+
+      if (rowsAffected === 0) {
+        // Handle case where no rows are deleted (EmployeeID not found)
+        return res.status(404).send('Employee not found or already deleted.');
+      }
+      res.redirect('/viewEmployees'); // Redirect after successful deletion
+    })
+    .catch((error) => {
+      // Log the error for troubleshooting
+      console.error('Error deleting Employee:', error);
+      res.status(500).send('Internal Server Error');
+    });
+});
+
+
 
 // Route for internal page (after login)
 app.get("/internal", (req, res) => {

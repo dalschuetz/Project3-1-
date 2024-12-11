@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Attendance</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>Edit Employees</h1>
+  
+  <form action="/editEmployee/<%= Employee.EmployeeID %>" method="POST">
+    <label for="EmpFirstName">First Name:</label>
+    <input type="text" name="EmpFirstName" value="<%= Employee.EmpFirstName %>" required />
+
+    <label for="EmpLastName">Last Name:</label>
+    <input type="text" name="EmpLastName" value="<%= Employee.EmpLastName %>" required />
+
+    <label for="EmpAreaCode">Area Code:</label>
+    <input type="text" name="EmpAreaCode" value="<%= Employee.EmpAreaCode %>" required />
+
+    <label for="EmpPhoneNumber">Phone Number:</label>
+    <input type="text" name="EmpPhoneNumber" value="<%= Employee.EmpPhoneNumber %>" required />
+
+    <button type="submit">Update</button>
+</form>
+
+  
+  <a href="/viewEmployees">Back to Employee List</a>
+  
+  </script>
+</body>
+</html>

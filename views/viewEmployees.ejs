@@ -11,7 +11,7 @@
     <h1>Employee Attendance</h1>
 
     <!-- Search Bar Form -->
-    <form action="/viewAttendance" method="GET">
+    <form action="/viewEmployees" method="GET">
       <input type="text" name="search" placeholder="Search by Employee Name" value="<%= searchQuery || '' %>" />
       <button type="submit">Search</button>
     </form>
@@ -20,29 +20,30 @@
       <thead>
         <tr>
           <th>Employee Name</th>
-          <th>Attendance Date</th>
-          <th>Attendance Points</th>
-          <th>Description</th>
+          <th>Employee Phone</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
       </thead>
       <tbody>
-        <% attendanceData.forEach(record => { %>
-        <% if (record.AttenPointValue > 0) { %>
+        <% EmployeeData.forEach(record => { %>
+        <%{ %>
         <tr>
           <td><%= record.EmpFirstName %> <%= record.EmpLastName %></td>
-          <td><%= new Date(record.AttenDate).toLocaleDateString() %></td>
-          <td><%= record.AttenPointValue %></td>
-          <td><%= record.AttenDescription %></td>
+          <td><%= record.EmpAreaCode%> -  <%= record.EmpPhoneNumber %></td>
           <td>
-            <a href="/editAttendance/<%= record.AttendanceID %>">
+            <a href="/editEmployee/<%= record.EmployeeID %>">
               <button>Edit</button>
             </a>
           </td>
           <td>
-            <a href="/deleteAttendance/<%=record.AttendanceID%>"><button>Delete</button></a>
+            <form action="/deleteEmployee/<%= record.EmployeeID %>" method="POST" style="display: inline;">
+              <button type="submit" onclick="return confirm('Are you sure you want to delete this employee?');">
+                Delete
+              </button>
+            </form>
           </td>
+          
         </tr>
         <% } %>
         <% }) %>
