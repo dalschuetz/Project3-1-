@@ -16,33 +16,145 @@
   <header>
     <div class="topnav">
       <ul>
-        <li><h1>Add New Employee</h1></li>
-        <li><a href="/">Logout</a></li>
-        <li><a href="/viewAttendance">View Attendance</a></li>
-        <li><a href="/viewEmployees">View Employees</a></li>
-        <li><a href="/addEmployee">Add Employees</a></li>
+        <li><h1>Cannon Commons Manager Hub</h1></li>
         <li><a href="/internal">Manager Home</a></li>
+        <li><a href="/addEmployee">Add Employees</a></li>
+        <li><a href="/viewEmployees">View Employees</a></li>
+        <li><a href="/viewAttendance">View Attendance</a></li>
+        <li><a href="/">Logout</a></li>
       </ul>
     </div>
   </header>
-    <div class="container">
-        <form action="/addEmployee" method="POST">
-            <label for="EmpFirstName">First Name:</label>
-            <input type="text" id="EmpFirstName" name="EmpFirstName" placeholder="First Name" required />
-            <br><br>
-            <label for="EmpLastName">Last Name:</label>
-            <input type="text" id="EmpLastName" name="EmpLastName" placeholder="Last Name" required />
-            <br><br>
-            <label for="EmpAreaCode">Area Code:</label>
-            <input type="text" id="EmpAreaCode" name="EmpAreaCode" placeholder="555" required />
-            <br><br>
-            <label for="EmpPhoneNumber">Phone Number:</label>
-            <input type="text" id="EmpPhoneNumber" name="EmpPhoneNumber" placeholder="123-1234" required />
-            <br><br>
-            <button type="submit">Add Employee</button>
-            <br>
-            <button type="button" onclick="location.href='/internal'">Cancel</button>
-          </form>          
+    <div style="
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      min-height: calc(100vh - 100px);
+      padding: 20px;
+    ">
+        <div style="
+          background-color: #748d92; 
+          color: white;
+          padding: 40px;
+          border-radius: 8px;
+          width: 100%;
+          max-width: 500px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        ">
+            <h2 style="
+              text-align: center;
+              color: white;
+              font-family: 'Oswald', sans-serif;
+              margin-bottom: 20px;
+              font-size: 1.8em;
+            ">Add New Employee</h2>
+
+            <form action="/addEmployee" method="POST" style="
+              display: flex;
+              flex-direction: column;
+              gap: 15px;
+            ">
+                <div style="display: flex; flex-direction: column;">
+                    <label for="EmpFirstName" style="
+                      margin-bottom: 5px;
+                      font-family: 'Montserrat', sans-serif;
+                    ">First Name:</label>
+                    <input type="text" id="EmpFirstName" name="EmpFirstName" placeholder="First Name" required style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 2px solid #124e66;
+                      border-radius: 4px;
+                      background-color: white;
+                      color: #212a31;
+                      font-family: 'Montserrat', sans-serif;
+                    "/>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label for="EmpLastName" style="
+                      margin-bottom: 5px;
+                      font-family: 'Montserrat', sans-serif;
+                    ">Last Name:</label>
+                    <input type="text" id="EmpLastName" name="EmpLastName" placeholder="Last Name" required style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 2px solid #124e66;
+                      border-radius: 4px;
+                      background-color: white;
+                      color: #212a31;
+                      font-family: 'Montserrat', sans-serif;
+                    "/>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label for="EmpAreaCode" style="
+                      margin-bottom: 5px;
+                      font-family: 'Montserrat', sans-serif;
+                    ">Area Code:</label>
+                    <input type="text" id="EmpAreaCode" name="EmpAreaCode" placeholder="555" required style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 2px solid #124e66;
+                      border-radius: 4px;
+                      background-color: white;
+                      color: #212a31;
+                      font-family: 'Montserrat', sans-serif;
+                    "/>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+                    <label for="EmpPhoneNumber" style="
+                      margin-bottom: 5px;
+                      font-family: 'Montserrat', sans-serif;
+                    ">Phone Number:</label>
+                    <input type="text" id="EmpPhoneNumber" name="EmpPhoneNumber" placeholder="123-1234" required style="
+                      width: 100%;
+                      padding: 10px;
+                      border: 2px solid #124e66;
+                      border-radius: 4px;
+                      background-color: white;
+                      color: #212a31;
+                      font-family: 'Montserrat', sans-serif;
+                    "/>
+                </div>
+
+                <div style="
+                  display: flex;
+                  justify-content: space-between;
+                  gap: 10px;
+                  margin-top: 10px;
+                ">
+                    <button type="submit" style="
+                      flex-grow: 1;
+                      padding: 12px;
+                      background-color: #124e66;
+                      color: white;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-family: 'Oswald', sans-serif;
+                      font-size: 1em;
+                      transition: background-color 0.3s ease;
+                    " onmouseover="this.style.backgroundColor='#748d92'" onmouseout="this.style.backgroundColor='#124e66'">
+                        Add Employee
+                    </button>
+                    <button type="button" onclick="location.href='/internal'" style="
+                      flex-grow: 1;
+                      padding: 12px;
+                      background-color: #748d92;
+                      color: white;
+                      border: none;
+                      border-radius: 4px;
+                      cursor: pointer;
+                      font-family: 'Oswald', sans-serif;
+                      font-size: 1em;
+                      transition: background-color 0.3s ease;
+                    " onmouseover="this.style.backgroundColor='#124e66'" onmouseout="this.style.backgroundColor='#748d92'">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 </html>
