@@ -7,63 +7,157 @@
   --mainFont: "Montserrat", sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background-color: var(--main);
   color: var(--textColor);
   font-family: var(--mainFont);
+  line-height: 1.6;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
-/*style the nav menu */
 
-ul {
+/* Navigation Styles */
+/* Navigation Styles */
+.topnav ul {
   list-style-type: none;
-  margin: 0;
+  margin: 0 0 20px 0;
   padding: 0;
   overflow: hidden;
   background-color: var(--accentColor);
+  display: flex;
+  justify-content: center; /* Changed from space-between */
+  align-items: center;
 }
-li h1 {
+
+.topnav li h1 {
   color: var(--textColor);
   text-align: center;
   font-family: var(--fancyFont);
-  font-size: 4.5em;
+  font-size: 2.5em;
+  padding: 10px;
+  margin-right: auto; /* Pushes other items to the right */
 }
 
-li a {
+.topnav li {
+  display: flex;
+  align-items: center;
+}
+
+.topnav li:not(:first-child) {
+  margin-left: 10px; /* Adds a small gap between nav items */
+}
+
+.topnav li a {
   display: block;
   color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
-  float: right;
   font-family: var(--fancyFont);
+  transition: background-color 0.3s ease;
 }
 
-li a:hover {
+.topnav li a:hover {
   background-color: var(--textColor);
 }
 
-/* style the welcome container */
-.welcome-container {
-  display: grid;
-  align-items: center;
-  grid-template-columns: 2fr 1fr;
-  column-gap: 10px;
+/* Search Bar Styles */
+form[action="/viewEmployees"] {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
 }
 
-.welcome-container img {
-  max-width: 100%;
-  justify-self: center;
-  align-self: center;
+form[action="/viewEmployees"] input[type="text"] {
+  width: 300px;
   padding: 10px;
-  margin-right: 20px;
+  font-size: 1em;
+  border: 2px solid var(--accentColor);
+  border-radius: 4px;
+  margin-right: 10px;
 }
 
-.welcome-container .text {
-  padding: 10px;
-  font-size: 1.4em;
-  line-height: 1.6;
-  text-align: center;
+form[action="/viewEmployees"] button {
+  padding: 10px 15px;
   background-color: var(--secondaryAccent);
-  color: var(--main);
-  margin: 15px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form[action="/viewEmployees"] button:hover {
+  background-color: var(--accentColor);
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+table, th, td {
+  border: 1px solid var(--accentColor);
+}
+
+thead {
+  background-color: var(--secondaryAccent);
+  color: white;
+}
+
+th, td {
+  text-align: center;
+  padding: 12px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgba(116, 141, 146, 0.1);
+}
+
+tbody tr:hover {
+  background-color: rgba(116, 141, 146, 0.2);
+}
+
+/* Button Styles */
+td a, td form {
+  display: inline-block;
+}
+
+td button {
+  padding: 8px 12px;
+  background-color: var(--secondaryAccent);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+td button:hover {
+  background-color: var(--accentColor);
+}
+
+/* Back to Home Link */
+a[href="/internal"] {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--secondaryAccent);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+a[href="/internal"]:hover {
+  color: var(--accentColor);
 }
